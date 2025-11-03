@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ShippingController {
 
-
     private final ShippingService shippingService;
 
     public ShippingController(ShippingService shippingService) {

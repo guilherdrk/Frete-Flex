@@ -1,29 +1,32 @@
 package com.guilherdrk.freteflex.service;
 
 import com.guilherdrk.freteflex.domain.ExpressShippingCalculator;
+import com.guilherdrk.freteflex.domain.ShippingCalculator;
 import com.guilherdrk.freteflex.domain.StandardShippingCalculator;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ShippingService {
 
-    private final StandardShippingCalculator standardShippingCalculator;
-    private final ExpressShippingCalculator expressShippingCalculator;
+    private final ShippingCalculator standardCalculator;
+    private final ShippingCalculator expressCalculator;
 
-    public ShippingService(StandardShippingCalculator standardShippingCalculator, ExpressShippingCalculator expressShippingCalculator) {
-        this.standardShippingCalculator = standardShippingCalculator;
-        this.expressShippingCalculator = expressShippingCalculator;
+    public ShippingService(@Qualifier("standardShippingCalculator") ShippingCalculator standardCalculator,
+                           @Qualifier("expressShippingCalculator") ShippingCalculator expressCalculator) {
+        this.standardCalculator = standardCalculator;
+        this.expressCalculator = expressCalculator;
     }
 
 
     public Double calculate(String shippingType, Double distance, Double weight){
 
         if(shippingType.equalsIgnoreCase("standard")){
-            return standardShippingCalculator.calculate(distance, weight);
+            return standardCalculator.calculate(distance, weight);
         }
 
         if (shippingType.equalsIgnoreCase("express")){
-            return expressShippingCalculator.calculate(distance, weight);
+            return expressCalculator.calculate(distance, weight);
         }
         return null;
     }
